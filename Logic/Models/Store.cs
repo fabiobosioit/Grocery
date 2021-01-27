@@ -2,10 +2,10 @@
 
 namespace Logic.Models
 {
-    public class Grocery
+    public class Store
     {
         public string Name { get; set; }
 
-        
+                
     }
 }
