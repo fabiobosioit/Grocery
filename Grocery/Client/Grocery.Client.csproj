@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Grocery.UI\Grocery.UI.csproj" />
     <ProjectReference Include="..\Shared\Grocery.Shared.csproj" />
   </ItemGroup>
 
