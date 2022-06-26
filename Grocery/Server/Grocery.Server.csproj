@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\Grocery.Client.Client.csproj" />
-    <ProjectReference Include="..\Shared\Grocery.Client.Shared.csproj" />
+    <ProjectReference Include="..\Client\Grocery.Client.csproj" />
+    <ProjectReference Include="..\Shared\Grocery.Shared.csproj" />
   </ItemGroup>
 
 

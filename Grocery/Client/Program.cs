@@ -1,4 +1,4 @@
-using Grocery.Client.Client;
+using Grocery.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

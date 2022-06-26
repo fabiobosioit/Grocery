@@ -1,7 +1,7 @@
-using Grocery.Client.Shared;
+using Grocery.Shared;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Grocery.Client.Server.Controllers
+namespace Grocery.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,4 +1,4 @@
-namespace Grocery.Client.Shared
+namespace Grocery.Shared
 {
     public class WeatherForecast
     {
