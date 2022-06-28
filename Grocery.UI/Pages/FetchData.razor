@@ -1,7 +1,6 @@
 ﻿@page "/fetchdata"
 @using Grocery.Shared
-@inject HttpClient Http
-
+@inject IDataService _DataService
 <PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
@@ -42,6 +41,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts = await _DataService.GetWeatherForecastAsync();
     }
 }
