@@ -13,7 +13,7 @@ public class Dataservice:IDataService
     {
         _httpClient = httpClient;
     }
-    public async Task<WeatherForecast[]> GetWeatherForecastAsync()
+    public async Task<WeatherForecast[]?> GetWeatherForecastAsync()
     {
         return await _httpClient.GetFromJsonAsync<WeatherForecast[]?>("WeatherForecast");
     }

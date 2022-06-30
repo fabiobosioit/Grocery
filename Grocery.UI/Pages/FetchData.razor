@@ -1,5 +1,4 @@
 ﻿@page "/fetchdata"
-@using Grocery.Shared
 @inject IDataService _DataService
 <PageTitle>Weather forecast</PageTitle>
 
@@ -7,20 +6,33 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (_forecasts == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <Grid  Forecasts="forecasts"/>
+    <Grid Forecasts="_forecasts" OnEdit="Edit"/>
+
+    if (_selectedItem != null)
+    {
+        <Detail Item="_selectedItem"></Detail>
+    }
+    
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private WeatherForecast[]? _forecasts;
+    private WeatherForecast? _selectedItem = null;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await _DataService.GetWeatherForecastAsync();
+        _forecasts = await _DataService.GetWeatherForecastAsync();
+    }
+
+    private void Edit(WeatherForecast selected)
+    {
+        _selectedItem = selected;
+        // Console.WriteLine(selected.Summary);
     }
 }
