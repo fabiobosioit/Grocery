@@ -13,7 +13,7 @@ namespace Test
         //When
         x++;
         //Then
-        Assert.Equal(x,2);
+        Assert.Equal(2,x);
         }
         [Fact]
         public void TestName()
@@ -24,7 +24,7 @@ namespace Test
         //When
         var x=a*b;
         //Then
-        Assert.Equal(x,12);
+        Assert.Equal(12,x);
         }
         
     }
