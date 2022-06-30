@@ -3,14 +3,14 @@ using Grocery.Shared;
 
 namespace Grocery.BlazorServer.Services;
 
-public class Dataservice:IDataService
+public class DataService:IDataService
 {
     private static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-    public Task<WeatherForecast[]?> GetWeatherForecastAsync()
+    public Task<List<WeatherForecast>?> GetWeatherForecastAsync()
     {
         var res = Enumerable.Range(1, 5)
             .Select(index =>
@@ -19,8 +19,8 @@ public class Dataservice:IDataService
                     Date = DateTime.Now.AddDays(index),
                     TemperatureC = Random.Shared.Next(-20, 55),
                     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-                }).ToArray();
+                }).ToList();
 
-        return Task.FromResult((WeatherForecast[]?)res);
+        return Task.FromResult(res)!;
     }
 }

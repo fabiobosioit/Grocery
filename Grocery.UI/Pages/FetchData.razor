@@ -23,7 +23,7 @@ else
 }
 
 @code {
-    private WeatherForecast[]? _forecasts;
+    private List<WeatherForecast>? _forecasts;
     private WeatherForecast? _selectedItem = null;
 
     protected override async Task OnInitializedAsync()
@@ -38,10 +38,7 @@ else
 
     private void Delete(WeatherForecast item)
     {
-        var newarray = _forecasts?.Where(el => (el.Summary != item.Summary
-                                               && el.Date != item.Date
-                                               && el.TemperatureC != item.TemperatureC)).ToArray<WeatherForecast>();
-        _forecasts = newarray;
+        _forecasts?.Remove(item);
         _selectedItem = null;
     }
 

@@ -42,10 +42,11 @@ else
 @code {
 
     [Parameter]
-    public WeatherForecast[]? Forecasts { get; set; }
+    public List<WeatherForecast>? Forecasts { get; set; }
 
     [Parameter]
     public EventCallback<WeatherForecast> OnEdit { get; set; }
+    
     [Parameter]
     public EventCallback<WeatherForecast> OnDelete { get; set; }
 
