@@ -8,17 +8,18 @@
 
 @if (_forecasts == null)
 {
-    <p><em>Loading...</em></p>
+    <p>
+        <em>Loading...</em>
+    </p>
 }
 else
 {
-    <Grid Forecasts="_forecasts" OnEdit="Edit"/>
+    <Grid Forecasts="_forecasts" OnEdit="Edit" OnDelete="Delete"/>
 
     if (_selectedItem != null)
     {
         <Detail Item="_selectedItem"></Detail>
     }
-    
 }
 
 @code {
@@ -33,6 +34,15 @@ else
     private void Edit(WeatherForecast selected)
     {
         _selectedItem = selected;
-        // Console.WriteLine(selected.Summary);
     }
+
+    private void Delete(WeatherForecast item)
+    {
+        var newarray = _forecasts?.Where(el => (el.Summary != item.Summary
+                                               && el.Date != item.Date
+                                               && el.TemperatureC != item.TemperatureC)).ToArray<WeatherForecast>();
+        _forecasts = newarray;
+        _selectedItem = null;
+    }
+
 }
