@@ -1,4 +1,11 @@
-<h3>Grid</h3>
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<button class="btn btn-primary" @onclick="OnCreate">Create</button>
+
 @if (Forecasts != null)
 {
     <table class="table">
@@ -46,7 +53,10 @@ else
 
     [Parameter]
     public EventCallback<WeatherForecast> OnEdit { get; set; }
-    
+
+    [Parameter]
+    public EventCallback OnCreate { get; set; }
+
     [Parameter]
     public EventCallback<WeatherForecast> OnDelete { get; set; }
 

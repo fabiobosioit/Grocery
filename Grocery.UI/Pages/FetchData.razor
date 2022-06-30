@@ -1,10 +1,5 @@
 ﻿@page "/fetchdata"
 @inject IDataService _DataService
-<PageTitle>Weather forecast</PageTitle>
-
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
 
 @if (_forecasts == null)
 {
@@ -14,11 +9,13 @@
 }
 else
 {
-    <Grid Forecasts="_forecasts" OnEdit="Edit" OnDelete="Delete"/>
-
     if (_selectedItem != null)
     {
-        <Detail Item="_selectedItem"></Detail>
+        <Detail Item="_selectedItem" OnCancel="Cancel" OnSave="SaveItem"></Detail>
+    }
+    else
+    {
+        <Grid Forecasts="_forecasts" OnEdit="Edit" OnDelete="Delete" OnCreate="Create"/>
     }
 }
 
@@ -33,13 +30,29 @@ else
 
     private void Edit(WeatherForecast selected)
     {
-        _selectedItem = selected;
+        _selectedItem = new WeatherForecast() { Date = selected.Date, Summary = selected.Summary, TemperatureC = selected.TemperatureC };
     }
 
-    private void Delete(WeatherForecast item)
+    private void Delete(WeatherForecast selected)
     {
-        _forecasts?.Remove(item);
+        _forecasts?.Remove(selected);
         _selectedItem = null;
+    }
+
+    private void Cancel()
+    {
+        _selectedItem = null;
+    }
+
+    private void SaveItem(WeatherForecast item)
+    {
+        _forecasts!.Add(item);
+        _selectedItem = null;
+    }
+
+    private void Create()
+    {
+        _selectedItem = new WeatherForecast();
     }
 
 }

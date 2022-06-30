@@ -1,6 +1,37 @@
 <h3>Detail of @Item?.Summary</h3>
 
+<EditForm Model="@Item" OnValidSubmit="@(() => OnSave.InvokeAsync(Item))">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Summary</label>
+        <InputText @bind-Value="Item!.Summary" class="form-control"/>
+        <ValidationMessage For="@(() => Item.Summary)"/>
+    </div>
+
+    <div class="form-group">
+        <label>Summary</label>
+        <InputDate @bind-Value="Item.Date" class="form-control"/>
+        <ValidationMessage For="@(() => Item.Date)"/>
+    </div>
+
+    <div class="form-group">
+        <label>Summary</label>
+        <InputNumber @bind-Value="Item.TemperatureC" class="form-control"/>
+        <ValidationMessage For="@(() => Item.TemperatureC)"/>
+    </div>
+
+    <button type="button" class="btn btn-default" @onclick="OnCancel">Cancel</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
 @code {
+
     [Parameter]
     public WeatherForecast? Item { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public EventCallback<WeatherForecast> OnSave { get; set; }
 }
