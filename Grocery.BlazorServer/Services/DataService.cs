@@ -1,20 +1,42 @@
+using Grocery.BlazorServer.Data;
 using Grocery.UI.Services;
 using Grocery.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace Grocery.BlazorServer.Services;
 
 public class DataService:IDataService
 {
-    public Task<List<WeatherForecastListItem>?> GetWeatherForecastAsync()
-    {
-        var res = Enumerable.Range(1, 5)
-            .Select(index =>
-                new WeatherForecastListItem
-                {
-                    Date = DateTime.Now.AddDays(index),
-                    TemperatureC = Random.Shared.Next(-20, 55)
-                }).ToList();
+    private readonly WeatherForecastContext _dbContext;
 
-        return Task.FromResult(res)!;
+    public DataService(WeatherForecastContext dbContext)
+    {
+        _dbContext = dbContext;
     }
+    public Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync()
+    {
+        Task<List<WeatherForecastListItem?>> res = _dbContext.WeatherForecasts.Select(element =>
+            new WeatherForecastListItem()
+            {
+                Id = element.Id,
+                Date = element.Date,
+                TemperatureC = element.TemperatureC
+            }).ToListAsync<WeatherForecastListItem?>();
+
+        return (res);
+    }
+    
+    public Task<WeatherForecastDetail?> GetWeatherForecastByIdAsync(int id)
+    {
+        return _dbContext.WeatherForecasts
+            .Where(x => x.Id == id)
+            .Select(element => new WeatherForecastDetail()
+            {
+                Id = element.Id,
+                Date = element.Date,
+                TemperatureC = element.TemperatureC
+            }).SingleOrDefaultAsync();
+    }
+
+
 }

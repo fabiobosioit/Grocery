@@ -20,22 +20,17 @@ else
 }
 
 @code {
-    private List<WeatherForecastListItem>? _forecasts;
+    private List<WeatherForecastListItem?>? _forecasts;
     private WeatherForecastDetail? _selectedItem = null;
 
     protected override async Task OnInitializedAsync()
     {
-        _forecasts = await _DataService.GetWeatherForecastAsync();
+        _forecasts = await _DataService.GetWeatherForecastsAsync();
     }
 
-    private void Edit(WeatherForecastListItem selected)
+    private async Task Edit(WeatherForecastListItem selected)
     {
-        _selectedItem = new WeatherForecastDetail() 
-            { 
-                Date = selected.Date, 
-                TemperatureC = selected.TemperatureC,
-                Summary = "n.a. in list"
-            };
+        _selectedItem = await _DataService.GetWeatherForecastByIdAsync(selected.Id) ;
     }
 
     private void Delete(WeatherForecastListItem selected)

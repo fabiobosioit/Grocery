@@ -13,8 +13,13 @@ public class DataService:IDataService
     {
         _httpClient = httpClient;
     }
-    public async Task<List<WeatherForecastListItem>?> GetWeatherForecastAsync()
+    public async Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync()
     {
-        return await _httpClient.GetFromJsonAsync<List<WeatherForecastListItem>?>("WeatherForecast");
+        return await _httpClient.GetFromJsonAsync<List<WeatherForecastListItem?>>("WeatherForecast");
+    }
+
+    public Task<WeatherForecastDetail?> GetWeatherForecastByIdAsync(int id)
+    {
+        throw new NotImplementedException();
     }
 }
