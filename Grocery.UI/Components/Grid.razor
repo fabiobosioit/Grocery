@@ -6,7 +6,7 @@
 
 <button class="btn btn-primary" @onclick="OnCreate">Create</button>
 
-@if (Forecasts != null)
+@if (Forecasts?.Count>0 )
 {
     <table class="table">
         <thead>
