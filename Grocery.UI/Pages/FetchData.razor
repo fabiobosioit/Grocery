@@ -20,20 +20,25 @@ else
 }
 
 @code {
-    private List<WeatherForecast>? _forecasts;
-    private WeatherForecast? _selectedItem = null;
+    private List<WeatherForecastListItem>? _forecasts;
+    private WeatherForecastDetail? _selectedItem = null;
 
     protected override async Task OnInitializedAsync()
     {
         _forecasts = await _DataService.GetWeatherForecastAsync();
     }
 
-    private void Edit(WeatherForecast selected)
+    private void Edit(WeatherForecastListItem selected)
     {
-        _selectedItem = new WeatherForecast() { Date = selected.Date, Summary = selected.Summary, TemperatureC = selected.TemperatureC };
+        _selectedItem = new WeatherForecastDetail() 
+            { 
+                Date = selected.Date, 
+                TemperatureC = selected.TemperatureC,
+                Summary = "n.a. in list"
+            };
     }
 
-    private void Delete(WeatherForecast selected)
+    private void Delete(WeatherForecastListItem selected)
     {
         _forecasts?.Remove(selected);
         _selectedItem = null;
@@ -44,15 +49,20 @@ else
         _selectedItem = null;
     }
 
-    private void SaveItem(WeatherForecast item)
+    private void SaveItem(WeatherForecastDetail item)
     {
-        _forecasts!.Add(item);
+        // _forecasts!.Add(item);
         _selectedItem = null;
     }
 
     private void Create()
     {
-        _selectedItem = new WeatherForecast();
+        _selectedItem = new WeatherForecastDetail()
+        {
+            Date = new DateTime(),
+            Summary = "n.a.",
+            TemperatureC = 0
+        };
     }
 
 }
