@@ -5,6 +5,7 @@ namespace Grocery.UI.Services;
 
 public interface IDataService
 {
-    Task<List<WeatherForecastListItem>?> GetWeatherForecastAsync();
-    
+    Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync();
+
+    Task<WeatherForecastDetail?> GetWeatherForecastByIdAsync(int id);
 }

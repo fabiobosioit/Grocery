@@ -1,5 +1,8 @@
+using Grocery.BlazorServer.Data;
 using Grocery.BlazorServer.Services;
 using Grocery.UI.Services;
+using Microsoft.EntityFrameworkCore;
+
 // using Microsoft.AspNetCore.Components;
 // using Microsoft.AspNetCore.Components.Web;
 
@@ -9,6 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IDataService,DataService>();
+
+builder.Services.AddDbContext<WeatherForecastContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 var app = builder.Build();
 
