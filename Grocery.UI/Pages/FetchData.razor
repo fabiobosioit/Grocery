@@ -25,29 +25,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await RefreshData();
+    }
+
+    private async Task RefreshData()
+    {
         _forecasts = await _DataService.GetWeatherForecastsAsync();
-    }
-
-    private async Task Edit(WeatherForecastListItem selected)
-    {
-        _selectedItem = await _DataService.GetWeatherForecastByIdAsync(selected.Id) ;
-    }
-
-    private void Delete(WeatherForecastListItem selected)
-    {
-        _forecasts?.Remove(selected);
-        _selectedItem = null;
-    }
-
-    private void Cancel()
-    {
-        _selectedItem = null;
-    }
-
-    private void SaveItem(WeatherForecastDetail item)
-    {
-        // _forecasts!.Add(item);
-        _selectedItem = null;
     }
 
     private void Create()
@@ -59,5 +42,40 @@ else
             TemperatureC = 0
         };
     }
+
+    private async Task Edit(WeatherForecastListItem selected)
+    {
+        _selectedItem = await _DataService.GetWeatherForecastByIdAsync(selected.Id);
+        // RefreshData();
+        // _selectedItem = null;
+    }
+
+    private async Task SaveItem(WeatherForecastDetail item)
+    {
+        if (item.Id == 0)
+        {
+            await _DataService.Create(item);
+        }
+        else
+        {
+            await _DataService.Save(item);
+        }
+        await RefreshData();
+        _selectedItem = null;
+    }
+
+    private async Task Delete(WeatherForecastListItem selected)
+    {
+    // _forecasts?.Remove(selected);
+        await _DataService.Delete(selected.Id);
+        await RefreshData();
+        _selectedItem = null;
+    }
+
+    private void Cancel()
+    {
+        _selectedItem = null;
+    }
+
 
 }
