@@ -9,13 +9,13 @@
     </div>
 
     <div class="form-group">
-        <label>Summary</label>
+        <label>Date</label>
         <InputDate @bind-Value="Item.Date" class="form-control"/>
         <ValidationMessage For="@(() => Item.Date)"/>
     </div>
 
     <div class="form-group">
-        <label>Summary</label>
+        <label>Temperature C</label>
         <InputNumber @bind-Value="Item.TemperatureC" class="form-control"/>
         <ValidationMessage For="@(() => Item.TemperatureC)"/>
     </div>

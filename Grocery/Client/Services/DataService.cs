@@ -22,4 +22,19 @@ public class DataService:IDataService
     {
         throw new NotImplementedException();
     }
+
+    public Task Create(WeatherForecastDetail item)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Save(WeatherForecastDetail item)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

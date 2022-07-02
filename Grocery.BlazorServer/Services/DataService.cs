@@ -38,5 +38,36 @@ public class DataService:IDataService
             }).SingleOrDefaultAsync();
     }
 
+    public Task Create(WeatherForecastDetail item)
+    {
+        var entity = new WeatherForecast()
+        {
+            Date = DateTime.Now,
+            Summary = item.Summary,
+            TemperatureC = item.TemperatureC
+        };
+        _dbContext.WeatherForecasts.Add(entity);
+        return _dbContext.SaveChangesAsync();
+    }
 
+    public Task Save(WeatherForecastDetail item)
+    {
+        var entity = new WeatherForecast()
+        {
+            Id = item.Id,
+            Date = DateTime.Now,
+            Summary = item.Summary,
+            TemperatureC = item.TemperatureC
+        };
+
+        _dbContext.WeatherForecasts.Update(entity);
+        return _dbContext.SaveChangesAsync();
+    }
+
+    public Task Delete(int id)
+    {
+        var entity = new WeatherForecast() { Id = id };
+        _dbContext.WeatherForecasts.Remove(entity);
+        return _dbContext.SaveChangesAsync();
+    }
 }
