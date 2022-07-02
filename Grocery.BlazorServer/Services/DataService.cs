@@ -8,14 +8,15 @@ namespace Grocery.BlazorServer.Services;
 public class DataService:IDataService
 {
     private readonly WeatherForecastContext _dbContext;
-
     public DataService(WeatherForecastContext dbContext)
     {
         _dbContext = dbContext;
     }
     public Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync()
     {
-        Task<List<WeatherForecastListItem?>> res = _dbContext.WeatherForecasts.Select(element =>
+        Task<List<WeatherForecastListItem?>> res = _dbContext.WeatherForecasts
+            .AsNoTracking()
+            .Select(element =>
             new WeatherForecastListItem()
             {
                 Id = element.Id,
@@ -38,7 +39,7 @@ public class DataService:IDataService
             }).SingleOrDefaultAsync();
     }
 
-    public Task Create(WeatherForecastDetail item)
+    public async Task Create(WeatherForecastDetail item)
     {
         var entity = new WeatherForecast()
         {
@@ -47,10 +48,11 @@ public class DataService:IDataService
             TemperatureC = item.TemperatureC
         };
         _dbContext.WeatherForecasts.Add(entity);
-        return _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
+        _dbContext.Entry(entity).State = EntityState.Detached;
     }
 
-    public Task Save(WeatherForecastDetail item)
+    public async Task Save(WeatherForecastDetail item)
     {
         var entity = new WeatherForecast()
         {
@@ -61,7 +63,8 @@ public class DataService:IDataService
         };
 
         _dbContext.WeatherForecasts.Update(entity);
-        return _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
+        _dbContext.Entry(entity).State = EntityState.Detached;
     }
 
     public Task Delete(int id)
