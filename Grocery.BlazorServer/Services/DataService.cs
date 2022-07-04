@@ -1,4 +1,5 @@
 using Grocery.BlazorServer.Data;
+using Grocery.Infrastructure;
 using Grocery.UI.Services;
 using Grocery.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -7,39 +8,41 @@ namespace Grocery.BlazorServer.Services;
 
 public class DataService:IDataService
 {
-    private readonly ERPDbContext _dbContext;
-    public DataService(ERPDbContext dbContext)
+    private readonly IRepository<WeatherForecast,int> _repository;
+    public DataService(IRepository<WeatherForecast,int> repository)
     {
-        _dbContext = dbContext;
+        _repository = repository;
     }
     public Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync()
     {
-        Task<List<WeatherForecastListItem?>> res = _dbContext.WeatherForecasts
-            .AsNoTracking()
+        Task<List<WeatherForecastListItem?>> res = _repository.GetAll()
             .Select(element =>
-            new WeatherForecastListItem()
-            {
-                Id = element.Id,
-                Date = element.Date,
-                TemperatureC = element.TemperatureC
-            }).ToListAsync<WeatherForecastListItem?>();
+                new WeatherForecastListItem()
+                {
+                    Id = element.Id,
+                    Date = element.Date,
+                    TemperatureC = element.TemperatureC
+                }).ToListAsync<WeatherForecastListItem?>();
 
         return (res);
     }
     
-    public Task<WeatherForecastDetail?> GetWeatherForecastByIdAsync(int id)
+    public async Task<WeatherForecastDetail?> GetWeatherForecastByIdAsync(int id)
     {
-        return _dbContext.WeatherForecasts
-            .Where(x => x.Id == id)
-            .Select(element => new WeatherForecastDetail()
+        var element = await _repository.GetByIdAsync(id);
+        if (element != null)
+        {
+            return new WeatherForecastDetail()
             {
                 Id = element.Id,
                 Date = element.Date,
                 TemperatureC = element.TemperatureC
-            }).SingleOrDefaultAsync();
+            };
+        }
+        return null;
     }
 
-    public async Task Create(WeatherForecastDetail item)
+    public Task Create(WeatherForecastDetail item)
     {
         var entity = new WeatherForecast()
         {
@@ -47,12 +50,10 @@ public class DataService:IDataService
             Summary = item.Summary,
             TemperatureC = item.TemperatureC
         };
-        _dbContext.WeatherForecasts.Add(entity);
-        await _dbContext.SaveChangesAsync();
-        _dbContext.Entry(entity).State = EntityState.Detached;
+        return _repository.Create(entity);
     }
 
-    public async Task Save(WeatherForecastDetail item)
+    public  Task Save(WeatherForecastDetail item)
     {
         var entity = new WeatherForecast()
         {
@@ -62,15 +63,16 @@ public class DataService:IDataService
             TemperatureC = item.TemperatureC
         };
 
-        _dbContext.WeatherForecasts.Update(entity);
-        await _dbContext.SaveChangesAsync();
-        _dbContext.Entry(entity).State = EntityState.Detached;
+        return _repository.Update(entity);
+        // await _dbContext.SaveChangesAsync();
+        // _dbContext.Entry(entity).State = EntityState.Detached;
     }
 
     public Task Delete(int id)
     {
-        var entity = new WeatherForecast() { Id = id };
-        _dbContext.WeatherForecasts.Remove(entity);
-        return _dbContext.SaveChangesAsync();
+        return _repository.Delete(id);
+        // var entity = new WeatherForecast() { Id = id };
+        // _dbContext.WeatherForecasts.Remove(entity);
+        // return _dbContext.SaveChangesAsync();
     }
 }
