@@ -18,9 +18,13 @@ public class EFRepository<TEntity, TKey> : IRepository<TEntity, TKey>
         return _set.AsNoTracking();
     }
 
-    public Task<TEntity?> GetByIdAsync(TKey id)
+    public async Task<TEntity?> GetByIdAsync(TKey id)
     {
-        return _set.FindAsync(id).AsTask();
+        // return _set.FindAsync(id).AsTask();
+        var entity = await  _set.FindAsync(id);
+        if (entity == null) return null;
+        _dbcontext.Entry(entity).State = EntityState.Detached;
+        return entity;
     }
 
     public async Task Create(TEntity entity)
