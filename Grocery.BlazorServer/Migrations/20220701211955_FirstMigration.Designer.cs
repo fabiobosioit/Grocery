@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Grocery.BlazorServer.Migrations
 {
-    [DbContext(typeof(WeatherForecastContext))]
+    [DbContext(typeof(ERPDbContext))]
     [Migration("20220701211955_FirstMigration")]
     partial class FirstMigration
     {
