@@ -1,5 +1,7 @@
 using Grocery.BlazorServer.Data;
 using Grocery.BlazorServer.Services;
+using Grocery.Infrastructure;
+using Grocery.Infrastructure.EF;
 using Grocery.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,9 @@ builder.Services.AddDbContext<ERPDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<DbContext, ERPDbContext>();
+builder.Services.AddScoped( typeof(IRepository<,>), typeof(EFRepository<,>));
+
 
 var app = builder.Build();
 
