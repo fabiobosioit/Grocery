@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Grocery.BlazorServer.Migrations
 {
-    [DbContext(typeof(WeatherForecastContext))]
+    [DbContext(typeof(ERPDbContext))]
     partial class WeatherForecastContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

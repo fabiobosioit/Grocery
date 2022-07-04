@@ -7,8 +7,8 @@ namespace Grocery.BlazorServer.Services;
 
 public class DataService:IDataService
 {
-    private readonly WeatherForecastContext _dbContext;
-    public DataService(WeatherForecastContext dbContext)
+    private readonly ERPDbContext _dbContext;
+    public DataService(ERPDbContext dbContext)
     {
         _dbContext = dbContext;
     }

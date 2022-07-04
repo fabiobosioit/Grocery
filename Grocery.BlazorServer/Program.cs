@@ -13,7 +13,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IDataService,DataService>();
 
-builder.Services.AddDbContext<WeatherForecastContext>(opt =>
+builder.Services.AddDbContext<ERPDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
