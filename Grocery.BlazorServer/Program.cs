@@ -1,4 +1,4 @@
-using Grocery.BlazorServer.Data;
+using Grocery.Business.Data;
 using Grocery.BlazorServer.Services;
 using Grocery.Infrastructure;
 using Grocery.Infrastructure.EF;

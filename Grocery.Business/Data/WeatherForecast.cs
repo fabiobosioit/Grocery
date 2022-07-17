@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Grocery.Infrastructure;
-using Grocery.UI.Services;
 
-namespace Grocery.BlazorServer.Data;
+namespace Grocery.Business.Data;
 
 public class WeatherForecast : IEntity<int>
 {

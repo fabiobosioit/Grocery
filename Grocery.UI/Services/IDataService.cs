@@ -10,4 +10,4 @@ public interface IDataService
     Task Create(WeatherForecastDetail item);
     Task Save(WeatherForecastDetail item);
     Task Delete(int id);
-}
+}       
