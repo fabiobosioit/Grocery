@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace Grocery.BlazorServer.Data;
+namespace Grocery.Business.Data;
 
 public class ERPDbContext: DbContext
 {

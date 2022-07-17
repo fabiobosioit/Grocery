@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Infrastructure", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Infrastructure.EF", "Grocery.Infrastructure.EF\Grocery.Infrastructure.EF.csproj", "{E8EE91C9-323B-4EEA-AF9C-15704D62B00A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Business", "Grocery.Business\Grocery.Business.csproj", "{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +141,18 @@ Global
 		{E8EE91C9-323B-4EEA-AF9C-15704D62B00A}.Release|x64.Build.0 = Release|Any CPU
 		{E8EE91C9-323B-4EEA-AF9C-15704D62B00A}.Release|x86.ActiveCfg = Release|Any CPU
 		{E8EE91C9-323B-4EEA-AF9C-15704D62B00A}.Release|x86.Build.0 = Release|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Debug|x64.Build.0 = Debug|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Debug|x86.Build.0 = Debug|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Release|x64.ActiveCfg = Release|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Release|x64.Build.0 = Release|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Release|x86.ActiveCfg = Release|Any CPU
+		{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
