@@ -1,4 +1,8 @@
+using Grocery.Business.Data;
+using Grocery.Infrastructure;
+using Grocery.Infrastructure.EF;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ERPDbContext>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Grocery.Server")
+        ));
+
+builder.Services.AddScoped<DbContext, ERPDbContext>();
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(EFRepository<,>));
 
 var app = builder.Build();
 

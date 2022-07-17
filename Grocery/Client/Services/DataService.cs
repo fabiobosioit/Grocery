@@ -20,21 +20,22 @@ public class DataService:IDataService
 
     public Task<WeatherForecastDetail?> GetWeatherForecastByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return _httpClient.GetFromJsonAsync<WeatherForecastDetail?>($"WeatherForecast/{id}");
     }
 
     public Task Create(WeatherForecastDetail item)
     {
-        throw new NotImplementedException();
+        return _httpClient.PostAsJsonAsync<WeatherForecastDetail?>($"WeatherForecast/{item.Id}", item);
     }
 
     public Task Save(WeatherForecastDetail item)
     {
-        throw new NotImplementedException();
+        return _httpClient.PutAsJsonAsync<WeatherForecastDetail?>($"WeatherForecast/{item.Id}", item);
     }
 
     public Task Delete(int id)
     {
-        throw new NotImplementedException();
+        return _httpClient.DeleteAsync($"WeatherForecast/{id}");
+
     }
 }
