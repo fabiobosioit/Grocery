@@ -17,7 +17,9 @@ builder.Services.AddScoped<IDataService,DataService>();
 
 builder.Services.AddDbContext<ERPDbContext>(opt =>
 {
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Grocery.BlazorServer")
+        );
 });
 builder.Services.AddScoped<DbContext, ERPDbContext>();
 builder.Services.AddScoped( typeof(IRepository<,>), typeof(EFRepository<,>));

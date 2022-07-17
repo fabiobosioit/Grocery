@@ -50,7 +50,7 @@ public class DataService:IDataService
             Summary = item.Summary,
             TemperatureC = item.TemperatureC
         };
-        return _repository.Create(entity);
+        return _repository.CreateAsync(entity);
     }
 
     public  Task Save(WeatherForecastDetail item)
@@ -63,14 +63,14 @@ public class DataService:IDataService
             TemperatureC = item.TemperatureC
         };
 
-        return _repository.Update(entity);
+        return _repository.UpdateAsync(entity);
         // await _dbContext.SaveChangesAsync();
         // _dbContext.Entry(entity).State = EntityState.Detached;
     }
 
     public Task Delete(int id)
     {
-        return _repository.Delete(id);
+        return _repository.DeleteAsync(id);
         // var entity = new WeatherForecast() { Id = id };
         // _dbContext.WeatherForecasts.Remove(entity);
         // return _dbContext.SaveChangesAsync();
