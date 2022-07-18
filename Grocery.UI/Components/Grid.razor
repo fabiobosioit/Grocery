@@ -53,7 +53,9 @@ else
 }
 
 @code {
-    private PropertyInfo[] properties = typeof(TGrid).GetProperties();
+    private PropertyInfo[] properties = typeof(TGrid).GetProperties()
+                                                    .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
+                                                    .ToArray();
 
     [Parameter]
     public List<TGrid>? Items { get; set; }
