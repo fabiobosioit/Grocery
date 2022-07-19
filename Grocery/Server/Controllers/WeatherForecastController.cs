@@ -37,7 +37,7 @@ namespace Grocery.Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<WeatherForecastDetail>> GetById(int id)
         {
             var entity = await this._repository.GetByIdAsync(id);
@@ -61,9 +61,11 @@ namespace Grocery.Server.Controllers
                     Date = model.Date, Summary = model.Summary, TemperatureC = model.TemperatureC
                 };
                 await this._repository.CreateAsync(entity);
+                model.Id=entity.Id;
+
                 return CreatedAtAction(nameof(GetById),
-                    new { id = entity.Id } // the address where to access to read new data 
-                    , entity); // return the created entity
+                    new { id = model.Id }   // the address where to access to read new data 
+                    , model);               // return the created entity
             }
             else
             {
@@ -71,7 +73,7 @@ namespace Grocery.Server.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, WeatherForecastDetail model)
         {
             var entity = await this._repository.GetByIdAsync(id);
@@ -94,7 +96,7 @@ namespace Grocery.Server.Controllers
             }
         }
         
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var entity = await this._repository.GetByIdAsync(id);
