@@ -11,7 +11,9 @@ else
 {
     if (_selectedItem != null)
     {
-        <Detail Item="_selectedItem" OnCancel="Cancel" OnSave="SaveItem">
+        <Detail TDetail="WeatherForecastDetail" Title="Summary"
+            Item="_selectedItem" 
+            OnCancel="Cancel" OnSave="SaveItem">
             <Fields>
                 <div class="form-group">
                     <label>Summary</label>
