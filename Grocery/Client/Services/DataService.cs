@@ -25,7 +25,7 @@ public class DataService:IDataService
 
     public Task Create(WeatherForecastDetail item)
     {
-        return _httpClient.PostAsJsonAsync<WeatherForecastDetail?>($"WeatherForecast/{item.Id}", item);
+        return _httpClient.PostAsJsonAsync<WeatherForecastDetail?>($"WeatherForecast", item);
     }
 
     public Task Save(WeatherForecastDetail item)
