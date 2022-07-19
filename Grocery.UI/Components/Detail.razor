@@ -1,4 +1,5 @@
-<h3>Detail of @Item?.Summary</h3>
+@typeparam TDetail
+<h3>Detail of @this._valueTitle</h3>
 
 <EditForm Model="@Item" OnValidSubmit="@(() => OnSave.InvokeAsync(Item))">
     <DataAnnotationsValidator />
@@ -11,14 +12,30 @@
 
 @code {
     [Parameter]
+    public string? Title { get; set; } 
+    [Parameter]
     public RenderFragment? Fields { get; set; }
 
     [Parameter]
-    public WeatherForecastDetail? Item { get; set; }
+    public TDetail? Item { get; set; }
 
     [Parameter]
     public EventCallback OnCancel { get; set; }
 
     [Parameter]
-    public EventCallback<WeatherForecastDetail> OnSave { get; set; }
+    public EventCallback<TDetail> OnSave { get; set; }
+
+    private string? _valueTitle;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (!string.IsNullOrEmpty(Title))
+        {
+            this._valueTitle = typeof(TDetail)?.GetProperty(Title)?.GetValue(Item)?.ToString();
+        }else
+        {
+            this._valueTitle = null;
+        }
+    }
 }
