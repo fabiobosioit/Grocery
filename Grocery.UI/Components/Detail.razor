@@ -3,8 +3,11 @@
 
 <EditForm Model="@Item" OnValidSubmit="@(() => OnSave.InvokeAsync(Item))">
     <DataAnnotationsValidator />
-   
-    @Fields
+
+    @if (Fields != null && Item != null)
+    {
+        @Fields(Item);
+    }
 
     <button type="button" class="btn btn-default" @onclick="OnCancel">Cancel</button>
     <button type="submit" class="btn btn-primary">Save</button>
@@ -12,9 +15,9 @@
 
 @code {
     [Parameter]
-    public string? Title { get; set; } 
+    public string? Title { get; set; }
     [Parameter]
-    public RenderFragment? Fields { get; set; }
+    public RenderFragment<TDetail>? Fields { get; set; }
 
     [Parameter]
     public TDetail? Item { get; set; }
@@ -33,7 +36,8 @@
         if (!string.IsNullOrEmpty(Title))
         {
             this._valueTitle = typeof(TDetail)?.GetProperty(Title)?.GetValue(Item)?.ToString();
-        }else
+        }
+        else
         {
             this._valueTitle = null;
         }
