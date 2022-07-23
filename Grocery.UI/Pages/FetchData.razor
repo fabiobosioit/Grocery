@@ -1,4 +1,5 @@
 ﻿@page "/fetchdata"
+@using System.ComponentModel.Design.Serialization
 @inject IDataService _DataService
 
 @if (_forecasts == null)
@@ -16,11 +17,9 @@ else
             OnCancel="Cancel" OnSave="SaveItem">
            @* Custom name for 'context' 
                <Fields Context="contesto">
-                <div class="form-group">
-                    <label>Summary</label>
-                    <InputText @bind-Value="contesto!.Summary" class="form-control" />
-                    <ValidationMessage For="@(() => contesto.Summary)" />
-                </div>
+
+               <TextBox Label="Summary" @bind-Value="contesto!.Summary"></TextBox>
+
 
                 <div class="form-group">
                     <label>Date</label>
@@ -34,25 +33,21 @@ else
                     <ValidationMessage For="@(() => contesto.TemperatureC)" />
                 </div>
             </Fields>*@
-            <Fields >
-                <div class="form-group">
-                    <label>Summary</label>
-                    <InputText @bind-Value="context!.Summary" class="form-control" />
-                    <ValidationMessage For="@(() => context.Summary)" />
-                </div>
+           <Fields >
+               <TextBox Label="Summary" @bind-Value="context!.Summary"></TextBox>
+               
+               <div class="form-group">
+                   <label>Date</label>
+                   <InputDate @bind-Value="context.Date" class="form-control"/>
+                   <ValidationMessage For="@(() => context.Date)"/>
+               </div>
 
-                <div class="form-group">
-                    <label>Date</label>
-                    <InputDate @bind-Value="context.Date" class="form-control" />
-                    <ValidationMessage For="@(() => context.Date)" />
-                </div>
-
-                <div class="form-group">
-                    <label>Temperature C</label>
-                    <InputNumber @bind-Value="context.TemperatureC" class="form-control" />
-                    <ValidationMessage For="@(() => context.TemperatureC)" />
-                </div>
-            </Fields>
+               <div class="form-group">
+                   <label>Temperature C</label>
+                   <InputNumber @bind-Value="context.TemperatureC" class="form-control"/>
+                   <ValidationMessage For="@(() => context.TemperatureC)"/>
+               </div>
+           </Fields>
         </Detail>
     }
     else
