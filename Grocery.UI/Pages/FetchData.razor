@@ -34,19 +34,9 @@ else
                 </div>
             </Fields>*@
            <Fields >
-               <TextBox Label="Summary" @bind-Value="context!.Summary"></TextBox>
-               
-               <div class="form-group">
-                   <label>Date</label>
-                   <InputDate @bind-Value="context.Date" class="form-control"/>
-                   <ValidationMessage For="@(() => context.Date)"/>
-               </div>
-
-               <div class="form-group">
-                   <label>Temperature C</label>
-                   <InputNumber @bind-Value="context.TemperatureC" class="form-control"/>
-                   <ValidationMessage For="@(() => context.TemperatureC)"/>
-               </div>
+               <TextBox Label="Summary" @bind-Value="context!.Summary" />
+               <DatetBox Label="Date" @bind-Value="context!.Date" />
+               <NumberBox Label="Temperature (C)" @bind-Value="context!.TemperatureC" />
            </Fields>
         </Detail>
     }
