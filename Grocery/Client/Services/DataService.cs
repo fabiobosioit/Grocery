@@ -10,36 +10,55 @@ public class DataService<ListItemType, DetailsType, IdType> : IDataService<ListI
     where DetailsType:BaseDetails<IdType>
 {
     private readonly HttpClient _httpClient;
+    private readonly IConfiguration _configuration;
 
-    public DataService(HttpClient httpClient)
+    public DataService(HttpClient httpClient, IConfiguration configuration)
     {
         _httpClient = httpClient;
+        this._configuration = configuration;
     }
     public async Task<List<ListItemType?>> GetAllItemsAsync()
     {
-        return await _httpClient.GetFromJsonAsync<List<ListItemType?>>("WeatherForecast");
+        var baseUrl = this.getBaseurl<ListItemType>();
+        return await _httpClient.GetFromJsonAsync<List<ListItemType?>>(baseUrl);
     }
 
     public Task<DetailsType?> GetByIdAsync(IdType id)
     {
-        return _httpClient.GetFromJsonAsync<DetailsType?>($"WeatherForecast/{id}");
+        var baseUrl = this.getBaseurl<DetailsType>();
+        return _httpClient.GetFromJsonAsync<DetailsType?>($"{baseUrl}/{id}");
     }
 
     public Task CreateAsync(DetailsType item)
     {
-        return _httpClient.PostAsJsonAsync<DetailsType?>($"WeatherForecast", item);
+        var baseUrl = this.getBaseurl<DetailsType>();
+        return _httpClient.PostAsJsonAsync<DetailsType?>($"{baseUrl}", item);
     }
 
     public Task SaveAsync(DetailsType item)
     {
-        return _httpClient.PutAsJsonAsync<DetailsType?>($"WeatherForecast/{item.Id}", item);
+        var baseUrl = this.getBaseurl<DetailsType>();
+        return _httpClient.PutAsJsonAsync<DetailsType?>($"{baseUrl}/{item.Id}", item);
     }
 
     public Task DeleteAsync(IdType id)
     {
+        var baseurl = this.getBaseurl<DetailsType>();
+        
         return _httpClient.DeleteAsync($"WeatherForecast/{id}");
 
     }
 
+    private string getBaseurl<T>()
+    {
+        var baseUrl = this._configuration[$"ApiUrls:{typeof(T).Name}"];
+        if (baseUrl == null)
+        {
+            //baseurl = typeof(DetailsType).Name; 
+            //oppure
+            throw new Exception($"ApiUrls:{typeof(T).Name} not implemented");
+        }
+        return baseUrl;
+    }
 
 }
