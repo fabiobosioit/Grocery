@@ -7,21 +7,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{EB4C73E2-0767-4D36-8F0B-DEF757EC0D3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Server", "Grocery\Server\Grocery.Server.csproj", "{298F2951-1844-40BB-A5A1-98C45F49B07C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grocery.Server", "Grocery\Server\Grocery.Server.csproj", "{298F2951-1844-40BB-A5A1-98C45F49B07C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Client", "Grocery\Client\Grocery.Client.csproj", "{31F48273-CF2B-4B37-8855-3CF321FDAB13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grocery.Client", "Grocery\Client\Grocery.Client.csproj", "{31F48273-CF2B-4B37-8855-3CF321FDAB13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Shared", "Grocery\Shared\Grocery.Shared.csproj", "{C0EF7362-D0FC-4641-9281-F1F0F277ADB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grocery.Shared", "Grocery\Shared\Grocery.Shared.csproj", "{C0EF7362-D0FC-4641-9281-F1F0F277ADB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.UI", "Grocery.UI\Grocery.UI.csproj", "{9254DDC3-67AE-4CE7-A05F-6CBE910D7EE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grocery.UI", "Grocery.UI\Grocery.UI.csproj", "{9254DDC3-67AE-4CE7-A05F-6CBE910D7EE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.BlazorServer", "Grocery.BlazorServer\Grocery.BlazorServer.csproj", "{C8E00D0D-BD53-4942-BF36-8E4504E48955}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grocery.BlazorServer", "Grocery.BlazorServer\Grocery.BlazorServer.csproj", "{C8E00D0D-BD53-4942-BF36-8E4504E48955}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Infrastructure", "Grocery.Infrastructure\Grocery.Infrastructure.csproj", "{821A05D7-FA77-4746-86BC-A2CEE689B8B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grocery.Infrastructure", "Grocery.Infrastructure\Grocery.Infrastructure.csproj", "{821A05D7-FA77-4746-86BC-A2CEE689B8B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Infrastructure.EF", "Grocery.Infrastructure.EF\Grocery.Infrastructure.EF.csproj", "{E8EE91C9-323B-4EEA-AF9C-15704D62B00A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grocery.Infrastructure.EF", "Grocery.Infrastructure.EF\Grocery.Infrastructure.EF.csproj", "{E8EE91C9-323B-4EEA-AF9C-15704D62B00A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grocery.Business", "Grocery.Business\Grocery.Business.csproj", "{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grocery.Business", "Grocery.Business\Grocery.Business.csproj", "{28C1D50D-2A37-4A83-AB8B-E2CABD4DF5A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
