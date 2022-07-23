@@ -2,12 +2,12 @@ using Grocery.Shared;
 
 namespace Grocery.UI.Services;
 
-public interface IDataService
+public interface IDataService<ListItemType, DetailsType, IdType>
 {
-    Task<List<WeatherForecastListItem?>> GetWeatherForecastsAsync();
+    Task<List<ListItemType?>> GetAllItemsAsync();
 
-    Task<WeatherForecastDetail?> GetWeatherForecastByIdAsync(int id);
-    Task Create(WeatherForecastDetail item);
-    Task Save(WeatherForecastDetail item);
-    Task Delete(int id);
+    Task<DetailsType?> GetByIdAsync(IdType id);
+    Task CreateAsync(DetailsType item);
+    Task SaveAsync(DetailsType item);
+    Task DeleteAsync(IdType id);
 }       

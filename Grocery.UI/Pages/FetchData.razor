@@ -1,9 +1,10 @@
 ﻿@page "/fetchdata"
-@inherits BaseCRUDPage
-@using System.ComponentModel.Design.Serialization
+@using Grocery.Shared
+@using Grocery.UI
+@inherits BaseCRUDPage<WeatherForecastListItem ,WeatherForedastDetails,int>
 
 
-@if (_forecasts == null)
+@if (_items == null)
 {
     <p>
         <em>Loading...</em>
@@ -13,7 +14,7 @@ else
 {
     if (_selectedItem != null)
     {
-        <Detail TDetail="WeatherForecastDetail" Title="Summary"
+        <Detail TDetail="WeatherForedastDetails" Title="Summary"
         Item="_selectedItem"
         OnCancel="Cancel" OnSave="SaveItem">
 
@@ -33,6 +34,6 @@ else
     }
     else
     {
-        <Grid TGrid="WeatherForecastListItem" Items="_forecasts" OnEdit="Edit" OnDelete="Delete" OnCreate="Create" />
+        <Grid TGrid="WeatherForecastListItem " Items="_items" OnEdit="Edit" OnDelete="Delete" OnCreate="Create" />
     }
 }

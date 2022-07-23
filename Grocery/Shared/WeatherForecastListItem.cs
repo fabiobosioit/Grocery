@@ -1,11 +1,12 @@
 using Grocery.Infrastructure.Attributes;
+using Grocery.Infrastructure.DataTypes;
 using System.ComponentModel.DataAnnotations;
 
 namespace Grocery.Shared
 {
-    public class WeatherForecastListItem
+    public class WeatherForecastListItem : BaseListItemDetails<int>
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime Date { get; set; }
