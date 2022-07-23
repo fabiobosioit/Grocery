@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
+@inherits BaseCRUDPage
 @using System.ComponentModel.Design.Serialization
-@inject IDataService _DataService
+
 
 @if (_forecasts == null)
 {
@@ -13,96 +14,25 @@ else
     if (_selectedItem != null)
     {
         <Detail TDetail="WeatherForecastDetail" Title="Summary"
-            Item="_selectedItem" 
-            OnCancel="Cancel" OnSave="SaveItem">
-           @* Custom name for 'context' 
-               <Fields Context="contesto">
+        Item="_selectedItem"
+        OnCancel="Cancel" OnSave="SaveItem">
 
-               <TextBox Label="Summary" @bind-Value="contesto!.Summary"></TextBox>
-
-
-                <div class="form-group">
-                    <label>Date</label>
-                    <InputDate @bind-Value="contesto.Date" class="form-control" />
-                    <ValidationMessage For="@(() => contesto.Date)" />
-                </div>
-
-                <div class="form-group">
-                    <label>Temperature C</label>
-                    <InputNumber @bind-Value="contesto.TemperatureC" class="form-control" />
-                    <ValidationMessage For="@(() => contesto.TemperatureC)" />
-                </div>
+            @*Custom name for 'context' *@
+            @*<Fields Context="contesto">
+                <TextBox Label="Summary" @bind-Value="contesto.Summary" />
+                <DatetBox Label="Date" @bind-Value="contesto.Date" />
+                <NumberBox Label="Temperature (C)" @bind-Value="contesto.TemperatureC" />
             </Fields>*@
-           <Fields >
-               <TextBox Label="Summary" @bind-Value="context!.Summary" />
-               <DatetBox Label="Date" @bind-Value="context!.Date" />
-               <NumberBox Label="Temperature (C)" @bind-Value="context!.TemperatureC" />
-           </Fields>
+
+            <Fields>
+                <TextBox Label="Summary" @bind-Value="context!.Summary" />
+                <DatetBox Label="Date" @bind-Value="context!.Date" />
+                <NumberBox Label="Temperature (C)" @bind-Value="context!.TemperatureC" />
+            </Fields>
         </Detail>
     }
     else
     {
         <Grid TGrid="WeatherForecastListItem" Items="_forecasts" OnEdit="Edit" OnDelete="Delete" OnCreate="Create" />
     }
-}
-
-@code {
-    private List<WeatherForecastListItem?>? _forecasts;
-    private WeatherForecastDetail? _selectedItem = null;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshData();
-    }
-
-    private async Task RefreshData()
-    {
-        _forecasts = await _DataService.GetWeatherForecastsAsync();
-    }
-
-    private void Create()
-    {
-        _selectedItem = new WeatherForecastDetail()
-            {
-                Date = new DateTime(),
-                Summary = "n.a.",
-                TemperatureC = 0
-            };
-    }
-
-    private async Task Edit(WeatherForecastListItem selected)
-    {
-        _selectedItem = await _DataService.GetWeatherForecastByIdAsync(selected.Id);
-        // RefreshData();
-        // _selectedItem = null;
-    }
-
-    private async Task SaveItem(WeatherForecastDetail item)
-    {
-        if (item.Id == 0)
-        {
-            await _DataService.Create(item);
-        }
-        else
-        {
-            await _DataService.Save(item);
-        }
-        await RefreshData();
-        _selectedItem = null;
-    }
-
-    private async Task Delete(WeatherForecastListItem selected)
-    {
-        // _forecasts?.Remove(selected);
-        await _DataService.Delete(selected.Id);
-        await RefreshData();
-        _selectedItem = null;
-    }
-
-    private void Cancel()
-    {
-        _selectedItem = null;
-    }
-
-
 }
