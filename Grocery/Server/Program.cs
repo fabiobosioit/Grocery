@@ -1,6 +1,7 @@
 using Grocery.Business.Data;
 using Grocery.Infrastructure;
 using Grocery.Infrastructure.EF;
+using Grocery.Server.Configurations;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<ERPDbContext>(opt =>
 
 builder.Services.AddScoped<DbContext, ERPDbContext>();
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(EFRepository<,>));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
