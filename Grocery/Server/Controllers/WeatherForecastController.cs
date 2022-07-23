@@ -27,10 +27,10 @@ namespace Grocery.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<WeatherForecastListItem>> Get()
+        public async Task<ActionResult<WeatherForecastListItem >> Get()
         {
             var result = await this._repository.GetAll()
-                .Select(x => new WeatherForecastListItem()
+                .Select(x => new WeatherForecastListItem ()
                 {
                     Id = x.Id, Date = x.Date, TemperatureC = x.TemperatureC
                 }).ToListAsync();
@@ -38,12 +38,12 @@ namespace Grocery.Server.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<WeatherForecastDetail>> GetById(int id)
+        public async Task<ActionResult<WeatherForedastDetails>> GetById(int id)
         {
             var entity = await this._repository.GetByIdAsync(id);
             if (entity == null) return NotFound();
 
-            var result = new WeatherForecastDetail()
+            var result = new WeatherForedastDetails()
             {
                 Id = entity.Id, Date = entity.Date, TemperatureC = entity.TemperatureC, Summary = entity.Summary
             };
@@ -51,7 +51,7 @@ namespace Grocery.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(WeatherForecastDetail model)
+        public async Task<IActionResult> Post(WeatherForedastDetails model)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace Grocery.Server.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Put(int id, WeatherForecastDetail model)
+        public async Task<IActionResult> Put(int id, WeatherForedastDetails model)
         {
             var entity = await this._repository.GetByIdAsync(id);
             if (entity == null) return NotFound();

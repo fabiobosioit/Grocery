@@ -1,16 +1,18 @@
-﻿using Grocery.Shared;
+﻿using Grocery.Infrastructure.DataTypes;
 using Grocery.UI.Services;
 using Microsoft.AspNetCore.Components;
 
 
 namespace Grocery.UI.Pages
 {
-    public class BaseCRUDPage :ComponentBase
+    public class BaseCRUDPage<ListItemType,DetailsType, IdType> : ComponentBase
+        where ListItemType : BaseListItemDetails<IdType>
+        where DetailsType : BaseDetails<IdType>, new()
     {
-        protected List<WeatherForecastListItem?>? _forecasts;
-        protected WeatherForecastDetail? _selectedItem = null;
+        protected List<ListItemType?>? _items;
+        protected DetailsType? _selectedItem = null;
 
-        [Inject] protected IDataService? _DataService { get; set; }
+        [Inject] protected IDataService<ListItemType, DetailsType, IdType>? _DataService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             if (_DataService == null)
@@ -22,44 +24,47 @@ namespace Grocery.UI.Pages
 
         protected async Task RefreshData()
         {
-            _forecasts = await _DataService!.GetWeatherForecastsAsync();
+            _items = await _DataService!.GetAllItemsAsync();
         }
 
         protected void Create()
         {
-            _selectedItem = new WeatherForecastDetail()
-            {
-                Date = new DateTime(),
-                Summary = "n.a.",
-                TemperatureC = 0
-            };
+            _selectedItem = new DetailsType();
+            //{
+            //    Date = new DateTime(),
+            //    Summary = "n.a.",
+            //    TemperatureC = 0
+            //};
         }
 
-        protected async Task Edit(WeatherForecastListItem selected)
+        protected async Task Edit(ListItemType selected)
         {
-            _selectedItem = await _DataService!.GetWeatherForecastByIdAsync(selected.Id);
+            if (selected.Id == null) throw new ArgumentException("Item cannot be null");
+            _selectedItem = await _DataService!.GetByIdAsync(selected.Id);
             // RefreshData();
             // _selectedItem = null;
         }
 
-        protected async Task SaveItem(WeatherForecastDetail item)
+        protected async Task SaveItem(DetailsType item)
         {
-            if (item.Id == 0)
+            //if (item.Id!= null && item.Id.Equals( default(IdType)))
+            if (EqualityComparer<IdType>.Default.Equals(item.Id, default(IdType)))
             {
-                await _DataService!.Create(item);
+                await _DataService!.CreateAsync(item);
             }
             else
             {
-                await _DataService!.Save(item);
+                await _DataService!.SaveAsync(item);
             }
             await RefreshData();
             _selectedItem = null;
         }
 
-        protected async Task Delete(WeatherForecastListItem selected)
+        protected async Task Delete(ListItemType selectedItem)
         {
+            if (selectedItem.Id == null) throw new ArgumentException("Item cannot be null");
             // _forecasts?.Remove(selected);
-            await _DataService!.Delete(selected.Id);
+            await _DataService!.DeleteAsync(selectedItem.Id);
             await RefreshData();
             _selectedItem = null;
         }

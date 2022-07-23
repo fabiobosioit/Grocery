@@ -1,10 +1,11 @@
+using Grocery.Infrastructure.DataTypes;
 using System.ComponentModel.DataAnnotations;
 
 namespace Grocery.Shared;
 
-public class WeatherForecastDetail
+public class WeatherForedastDetails: BaseDetails<int>
 {
-    public int Id { get; set; }
+    //public int Id { get; set; }
     public DateTime Date { get; set; }
 
     public int TemperatureC { get; set; }
