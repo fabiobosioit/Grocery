@@ -10,7 +10,7 @@ namespace Grocery.Server.Controllers
     [ApiController]
     // [Route("[controller]")]
     public class CRUDController<ListItemType, DetailsType, IdType, EntityType> : ControllerBase
-        where ListItemType : BaseListItemDetails<IdType>
+        where ListItemType : BaseListItem<IdType>
         where DetailsType : BaseDetails<IdType>
         where EntityType : class, IEntity<IdType>, new()
     {

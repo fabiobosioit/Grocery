@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Grocery.Infrastructure.DataTypes
 {
-    public abstract class BaseListItemDetails<IdType>
+    public abstract class BaseListItem<IdType>
     {
         public IdType? Id { get; set; }
     }

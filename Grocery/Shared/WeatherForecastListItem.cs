@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Grocery.Shared
 {
-    public class WeatherForecastListItem : BaseListItemDetails<int>
+    public class WeatherForecastListItem : BaseListItem<int>
     {
         //public int Id { get; set; }
 
