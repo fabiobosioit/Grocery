@@ -8,6 +8,7 @@ namespace Grocery.Client.Services;
 
 public class DataService<ListItemType, DetailsType, IdType> : IDataService<ListItemType, DetailsType, IdType>
     where DetailsType:BaseDetails<IdType>
+    where ListItemType : BaseListItem<IdType>
 {
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
@@ -17,10 +18,11 @@ public class DataService<ListItemType, DetailsType, IdType> : IDataService<ListI
         _httpClient = httpClient;
         this._configuration = configuration;
     }
-    public async Task<List<ListItemType?>> GetAllItemsAsync()
+    public async Task<Page<ListItemType, IdType>> GetAllItemsAsync(PageParameters pageParameters)
     {
         var baseUrl = this.getBaseurl<ListItemType>();
-        return await _httpClient.GetFromJsonAsync<List<ListItemType?>>(baseUrl);
+        return await _httpClient.GetFromJsonAsync<Page<ListItemType,IdType>>(
+            $"{baseUrl}&OrderBy={pageParameters.OrderBy}&OrderByDirection={pageParameters.OrderByDirection}")!;
     }
 
     public Task<DetailsType?> GetByIdAsync(IdType id)
