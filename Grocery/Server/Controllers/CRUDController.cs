@@ -2,9 +2,10 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Grocery.Infrastructure;
 using Grocery.Infrastructure.DataTypes;
+using Grocery.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Grocery.Infrastructure.DataTypes;
+
 
 namespace Grocery.Server.Controllers
 {
@@ -15,7 +16,7 @@ namespace Grocery.Server.Controllers
         where DetailsType : BaseDetails<IdType>
         where EntityType : class, IEntity<IdType>, new()
     {
-        
+
         protected readonly ILogger<CRUDController<ListItemType, DetailsType, IdType, EntityType>> _logger;
         protected readonly IRepository<EntityType, IdType> _repository;
         protected readonly IMapper _mapper;
@@ -32,15 +33,38 @@ namespace Grocery.Server.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public virtual async Task<ActionResult<ListItemType>> Get([FromQuery]PageParameters pageparameters)
+        public virtual async Task<ActionResult<ListItemType>> Get([FromQuery] PageParameters pageparameters)
         {
-            var result = await _repository.GetAll()
+            var result = _repository.GetAll();
+
+            if (!string.IsNullOrEmpty(pageparameters.OrderBy))
+            {
+                try
+                {
+                    if (pageparameters.OrderByDirection == SortDirection.Ascending)
+                    {
+                        result = result.OrderByProperty(pageparameters.OrderBy);
+                    }
+                    else
+                    {
+                        result = result.OrderByDescendingProperty(pageparameters.OrderBy);
+                    }
+                }
+                catch
+                {
+                    pageparameters.OrderBy = null;
+                    pageparameters.OrderByDirection = SortDirection.Ascending;
+                }
+            }
+
+
+            var sortedResult = await result//.OrderByDescending()
                 .ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             var page = new Page<ListItemType, IdType>()
             {
-                Items = result,
+                Items = sortedResult,
                 OrderBy = pageparameters.OrderBy,
                 OrderByDirection = pageparameters.OrderByDirection
             };
@@ -76,7 +100,7 @@ namespace Grocery.Server.Controllers
                 };
                 */
                 await _repository.CreateAsync(entity);
-                model.Id=entity.Id;
+                model.Id = entity.Id;
 
                 return CreatedAtAction(nameof(GetById),
                     new { id = model.Id }   // the address where to access to read new data 
@@ -114,7 +138,7 @@ namespace Grocery.Server.Controllers
                 return BadRequest();
             }
         }
-        
+
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> Delete(IdType id)
         {
@@ -126,5 +150,5 @@ namespace Grocery.Server.Controllers
         }
 
     }
-    
+
 }
