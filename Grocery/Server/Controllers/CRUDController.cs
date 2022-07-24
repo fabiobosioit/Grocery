@@ -4,6 +4,7 @@ using Grocery.Infrastructure;
 using Grocery.Infrastructure.DataTypes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Grocery.Infrastructure.DataTypes;
 
 namespace Grocery.Server.Controllers
 {
@@ -36,11 +37,15 @@ namespace Grocery.Server.Controllers
             var result = await _repository.GetAll()
                 .ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
                 .ToListAsync();
-                //.Select(x => new WeatherForecastListItem ()
-                //{
-                //    Id = x.Id, Date = x.Date, TemperatureC = x.TemperatureC
-                //}).ToListAsync();
-            return Ok(result);
+
+            var page = new Page<ListItemType, IdType>()
+            {
+                Items = result,
+                OrderBy = pageparameters.OrderBy,
+                OrderByDirection = pageparameters.OrderByDirection
+            };
+
+            return Ok(page);
         }
 
         [HttpGet("{id}")]

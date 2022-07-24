@@ -35,7 +35,7 @@ else
     else
     {
         <Grid IdType="int" TGrid="WeatherForecastListItem"  
-            Page="page" 
+            Page="page"  OnPageRequest="RefreshData"
             OnEdit="Edit" OnDelete="Delete" OnCreate="Create" />
     }
 }

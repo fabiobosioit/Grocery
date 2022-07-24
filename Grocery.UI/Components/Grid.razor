@@ -1,4 +1,4 @@
-@typeparam IdType 
+@typeparam IdType
 @typeparam TGrid where TGrid :BaseListItem<IdType>
 
 <PageTitle>Weather forecast</PageTitle>
@@ -17,8 +17,9 @@
                 @foreach (var property in properties)
                 {
                     var display = property.GetCustomAttribute<DisplayAttribute>();
-                    <th onclick="()=> RequireColumnSort(property.Name)">
-                        @(display ==null ? property.Name : display.Name)</th>
+                    <th @onclick="() => RequireColumnSort(property.Name)">
+                        @(display ==null ? property.Name : display.Name)
+                    </th>
                 }
                 <th></th>
             </tr>
@@ -59,10 +60,10 @@ else
                                                     .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
                                                     .ToArray();
 
-    private PageParameters pageparameters = new PageParameters();
+    private PageParameters _pageparameters = new PageParameters();
 
     [Parameter]
-    public Page<TGrid,IdType>? Page { get; set; }
+    public Page<TGrid, IdType>? Page { get; set; }
 
     [Parameter]
     public EventCallback<TGrid> OnEdit { get; set; }
@@ -73,8 +74,23 @@ else
     [Parameter]
     public EventCallback<TGrid> OnDelete { get; set; }
 
-    public void RequireColumnSort(string columnname)
+    [Parameter]
+    public EventCallback<PageParameters> OnPageRequest { get; set; }
+
+    public async Task RequireColumnSort(string columnname)
     {
-        
+        if (_pageparameters.OrderBy != columnname)
+        {
+            _pageparameters.OrderBy = columnname;
+            _pageparameters.OrderByDirection = SortDirection.Ascending;
+        }
+        else
+        {
+            _pageparameters.OrderByDirection =
+            _pageparameters.OrderByDirection == SortDirection.Ascending
+                    ? SortDirection.Descending : SortDirection.Ascending;
+
+        }
+        await OnPageRequest.InvokeAsync(_pageparameters);
     }
 }
