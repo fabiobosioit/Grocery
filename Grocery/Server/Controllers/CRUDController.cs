@@ -31,7 +31,7 @@ namespace Grocery.Server.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public virtual async Task<ActionResult<ListItemType>> Get()
+        public virtual async Task<ActionResult<ListItemType>> Get([FromQuery]PageParameters pageparameters)
         {
             var result = await _repository.GetAll()
                 .ProjectTo<ListItemType>(_mapper.ConfigurationProvider)

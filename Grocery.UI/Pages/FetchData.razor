@@ -4,7 +4,7 @@
 @inherits BaseCRUDPage<WeatherForecastListItem ,WeatherForedastDetails,int>
 
 
-@if (_items == null)
+@if (page == null)
 {
     <p>
         <em>Loading...</em>
@@ -34,6 +34,8 @@ else
     }
     else
     {
-        <Grid TGrid="WeatherForecastListItem " Items="_items" OnEdit="Edit" OnDelete="Delete" OnCreate="Create" />
+        <Grid IdType="int" TGrid="WeatherForecastListItem"  
+            Page="page" 
+            OnEdit="Edit" OnDelete="Delete" OnCreate="Create" />
     }
 }

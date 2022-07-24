@@ -9,7 +9,7 @@ namespace Grocery.UI.Pages
         where ListItemType : BaseListItem<IdType>
         where DetailsType : BaseDetails<IdType>, new()
     {
-        protected List<ListItemType?>? _items;
+        protected Page<ListItemType, IdType>? page;
         protected DetailsType? _selectedItem = null;
 
         [Inject] protected IDataService<ListItemType, DetailsType, IdType>? _DataService { get; set; }
@@ -19,12 +19,12 @@ namespace Grocery.UI.Pages
             {
                 throw new Exception("DataService not inizitlized!!!");  //here the properties are already instanciated
             }
-            await RefreshData();
+            await RefreshData(new PageParameters());
         }
 
-        protected async Task RefreshData()
+        protected async Task RefreshData(PageParameters pageparameters)
         {
-            _items = await _DataService!.GetAllItemsAsync();
+            page = await _DataService!.GetAllItemsAsync(pageparameters);
         }
 
         protected void Create()
@@ -56,7 +56,7 @@ namespace Grocery.UI.Pages
             {
                 await _DataService!.SaveAsync(item);
             }
-            await RefreshData();
+            await RefreshData(new PageParameters());
             _selectedItem = null;
         }
 
@@ -65,7 +65,7 @@ namespace Grocery.UI.Pages
             if (selectedItem.Id == null) throw new ArgumentException("Item cannot be null");
             // _forecasts?.Remove(selected);
             await _DataService!.DeleteAsync(selectedItem.Id);
-            await RefreshData();
+            await RefreshData(new PageParameters());
             _selectedItem = null;
         }
 
