@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 namespace Grocery.UI.Pages
 {
     public class BaseCRUDPage<ListItemType,DetailsType, IdType> : ComponentBase
-        where ListItemType : BaseListItemDetails<IdType>
+        where ListItemType : BaseListItem<IdType>
         where DetailsType : BaseDetails<IdType>, new()
     {
         protected List<ListItemType?>? _items;
