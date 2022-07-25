@@ -21,6 +21,8 @@ namespace Grocery.Server.Controllers
         protected readonly IRepository<EntityType, IdType> _repository;
         protected readonly IMapper _mapper;
 
+        protected readonly int pageSize = 3;
+
         public CRUDController(ILogger<CRUDController<ListItemType, DetailsType, IdType, EntityType>> logger,
             IRepository<EntityType, IdType> repository,
             IMapper mapper)
@@ -36,6 +38,13 @@ namespace Grocery.Server.Controllers
         public virtual async Task<ActionResult<ListItemType>> Get([FromQuery] PageParameters pageparameters)
         {
             var result = _repository.GetAll();
+
+            int itemCount = result.Count();
+            int pageCount = (itemCount + pageSize - 1) / pageSize;
+
+            if (pageparameters.Page > pageCount) pageparameters.Page = pageCount;
+            if (pageparameters.Page < 1) pageparameters.Page = 1;
+
 
             if (!string.IsNullOrEmpty(pageparameters.OrderBy))
             {
@@ -59,11 +68,16 @@ namespace Grocery.Server.Controllers
 
 
             var sortedResult = await result//.OrderByDescending()
+                .Skip((pageparameters.Page - 1)*pageSize)
+                .Take(pageSize)
                 .ProjectTo<ListItemType>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             var page = new Page<ListItemType, IdType>()
             {
+                CurrentPage = pageparameters.Page,
+                ItemCount = itemCount,
+                PageCount   = pageCount,
                 Items = sortedResult,
                 OrderBy = pageparameters.OrderBy,
                 OrderByDirection = pageparameters.OrderByDirection

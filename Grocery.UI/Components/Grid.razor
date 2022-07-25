@@ -19,10 +19,10 @@
                     var display = property.GetCustomAttribute<DisplayAttribute>();
                     <th @onclick="() => RequireColumnSort(property.Name)">
 
-                        <i class="oi 
-                    @(Page.OrderBy == property.Name 
-                        ?(Page.OrderByDirection == SortDirection.Ascending 
-                                                ? "oi-sort-ascending" 
+                        <i class="oi
+                    @(Page.OrderBy == property.Name
+                        ?(Page.OrderByDirection == SortDirection.Ascending
+                                                ? "oi-sort-ascending"
                                                 : "oi-sort-descending")
                         :null)"></i>
 
@@ -57,6 +57,31 @@
             }
         </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item @(Page.CurrentPage==1?"disabled":null)" @onclick="() => RequestPage(1)">
+                <a class="page-link">First</a>
+            </li>
+            <li class="page-item @(Page.CurrentPage==1?"disabled":null)" @onclick="() => RequestPage(Page.CurrentPage - 1)">
+                <a class="page-link">Previous</a>
+            </li>
+
+            @for (var page = 1; page <= Page.PageCount; page++)
+            {
+                var currentPage = page;
+                <li class="page-item @(Page.CurrentPage==currentPage?"active":null)" 
+                    @onclick="() => RequestPage(currentPage)">
+                    <a class="page-link">@currentPage</a>
+                </li>
+            }
+            <li class="page-item @(Page.CurrentPage==Page.PageCount?"disabled":null)" @onclick="() => RequestPage(Page.CurrentPage + 1)">
+                <a class="page-link">Next</a>
+            </li> 
+            <li class="page-item @(Page.CurrentPage==Page.PageCount?"disabled":null)" @onclick="() => RequestPage(Page.PageCount)">
+                <a class="page-link">Last</a>
+            </li>
+        </ul>
+    </nav>
 }
 else
 {
@@ -100,5 +125,12 @@ else
 
         }
         await OnPageRequest.InvokeAsync(_pageparameters);
+    }
+
+    public async Task RequestPage(int requestedpage)
+    {
+        _pageparameters.Page = requestedpage;
+        await OnPageRequest.InvokeAsync(_pageparameters);
+
     }
 }
