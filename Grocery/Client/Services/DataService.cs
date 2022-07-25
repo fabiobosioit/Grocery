@@ -22,7 +22,7 @@ public class DataService<ListItemType, DetailsType, IdType> : IDataService<ListI
     {
         var baseUrl = this.getBaseurl<ListItemType>();
         return await _httpClient.GetFromJsonAsync<Page<ListItemType,IdType>>(
-            $"{baseUrl}?OrderBy={pageParameters.OrderBy}&OrderByDirection={pageParameters.OrderByDirection}")!;
+            $"{baseUrl}?OrderBy={pageParameters.OrderBy}&OrderByDirection={pageParameters.OrderByDirection}&Page={pageParameters.Page}")!;
     }
 
     public Task<DetailsType?> GetByIdAsync(IdType id)
