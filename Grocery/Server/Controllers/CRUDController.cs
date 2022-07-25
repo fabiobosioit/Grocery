@@ -5,7 +5,7 @@ using Grocery.Infrastructure.DataTypes;
 using Grocery.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq.Expressions;
 
 namespace Grocery.Server.Controllers
 {
@@ -32,12 +32,26 @@ namespace Grocery.Server.Controllers
             _mapper = mapper;
         }
 
+        protected virtual Expression<Func<EntityType, bool>>? ApplyFilter(string filterText)
+        {
+            return null;
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         public virtual async Task<ActionResult<ListItemType>> Get([FromQuery] PageParameters pageparameters)
         {
             var result = _repository.GetAll();
+
+            if (!string.IsNullOrEmpty(pageparameters.FilterText))
+            {
+                var predicate = ApplyFilter(pageparameters.FilterText);
+                if(predicate != null)
+                {
+                    result = result.Where(predicate);
+                }
+            }
 
             int itemCount = result.Count();
             int pageCount = (itemCount + pageSize - 1) / pageSize;

@@ -5,6 +5,7 @@ using Grocery.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Linq.Expressions;
 
 namespace Grocery.Server.Controllers
 {
@@ -17,6 +18,11 @@ namespace Grocery.Server.Controllers
             IRepository<WeatherForecast, int> repository,
             IMapper mapper)
             : base(logger, repository, mapper) { }
+
+        protected override Expression<Func<WeatherForecast, bool>>? ApplyFilter(string filterText)
+        {
+            return x=>x.Summary!=null && x.Summary.Contains(filterText);
+        }
     }
 
 }

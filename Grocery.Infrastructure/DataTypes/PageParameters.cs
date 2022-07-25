@@ -10,6 +10,7 @@ namespace Grocery.Infrastructure.DataTypes
     {
         public int Page { get; set; } = 1;
         public string? OrderBy { get; set; }
+        public string? FilterText { get; set; }
         public SortDirection OrderByDirection { get; set; }
 
     }
