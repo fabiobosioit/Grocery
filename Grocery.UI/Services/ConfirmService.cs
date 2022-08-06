@@ -2,13 +2,6 @@ using Microsoft.JSInterop;
 
 namespace Grocery.UI.Services;
 
-public interface IConfirmService
-{
-    Task Init();
-    Task ShowConfirm(string confirmId);
-    Task HideConfirm(string confirmId);
-}
-
 public class ConfirmService:IAsyncDisposable, IConfirmService
 {
     private readonly IJSRuntime _jsRuntime;
