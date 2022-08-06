@@ -1,6 +1,6 @@
 @typeparam IdType
-@typeparam TGrid where TGrid :BaseListItem<IdType>
-@inject IJSRuntime JsRuntime
+@typeparam TGrid where TGrid : BaseListItem<IdType>
+@inject IConfirmService ConfirmService
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -10,80 +10,75 @@
 
 <button class="btn btn-primary" @onclick="OnCreate">Create Item</button>
 
-<input type="text" class="form-control" 
-    @bind-value="_pageparameters.FilterText" 
-    @onkeyup="@(async (e) => {if (e.Key=="Enter") await OnPageRequest.InvokeAsync(_pageparameters);})"
-    />
+<input type="text" class="form-control"
+       @bind-value="_pageparameters.FilterText"
+       @onkeyup="@(async (e) => {if (e.Key == "Enter") await OnPageRequest.InvokeAsync(_pageparameters);})"/>
 
 @if (Page?.Items?.Count > 0)
 {
     <table class="table">
         <thead>
+        <tr>
+            @foreach (var property in properties)
+            {
+                var display = property.GetCustomAttribute<DisplayAttribute>();
+                <th @onclick="() => RequireColumnSort(property.Name)">
+
+                    <i class="oi
+                    @(Page.OrderBy == property.Name ? (Page.OrderByDirection == SortDirection.Ascending ? "oi-sort-ascending" : "oi-sort-descending") : null)"></i>
+
+                    @(display == null ? property.Name : display.Name)
+                </th>
+            }
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Page.Items)
+        {
             <tr>
                 @foreach (var property in properties)
                 {
-                    var display = property.GetCustomAttribute<DisplayAttribute>();
-                    <th @onclick="() => RequireColumnSort(property.Name)">
+                    var value = property.GetValue(item);
+                    var displayFormat = property.GetCustomAttribute<DisplayFormatAttribute>();
 
-                        <i class="oi
-                    @(Page.OrderBy == property.Name
-                        ?(Page.OrderByDirection == SortDirection.Ascending
-                                                ? "oi-sort-ascending"
-                                                : "oi-sort-descending")
-                        :null)"></i>
-
-                        @(display ==null ? property.Name : display.Name)
-                    </th>
+                    <td>@(displayFormat?.DataFormatString == null ? value : string.Format(displayFormat.DataFormatString, value))</td>
                 }
-                <th></th>
+                <td>
+                    <button class="btn btn-warning"
+                            @onclick="@(() => OnEdit.InvokeAsync(item))">
+                        Edit
+                    </button>
+                    <button class="btn btn-error"
+                            @onclick="@(() => RequestDelete(item))">
+                        Delete
+                    </button>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Page.Items)
-            {
-                <tr>
-                    @foreach (var property in properties)
-                    {
-                        var value = property.GetValue(item);
-                        var displayFormat = property.GetCustomAttribute<DisplayFormatAttribute>();
-
-                        <td>@(displayFormat?.DataFormatString ==null ? value : string.Format(displayFormat.DataFormatString,value))</td>
-                    }
-                    <td>
-                        <button class="btn btn-warning"
-                        @onclick="@(() => OnEdit.InvokeAsync(item))">
-                            Edit
-                        </button>
-                        <button class="btn btn-error"
-                        @onclick="@(() => RequestDelete(item))">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            }
+        }
         </tbody>
     </table>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item @(Page.CurrentPage==1?"disabled":null)" @onclick="() => RequestPage(1)">
+            <li class="page-item @(Page.CurrentPage == 1 ? "disabled" : null)" @onclick="() => RequestPage(1)">
                 <a class="page-link">First</a>
             </li>
-            <li class="page-item @(Page.CurrentPage==1?"disabled":null)" @onclick="() => RequestPage(Page.CurrentPage - 1)">
+            <li class="page-item @(Page.CurrentPage == 1 ? "disabled" : null)" @onclick="() => RequestPage(Page.CurrentPage - 1)">
                 <a class="page-link">Previous</a>
             </li>
 
             @for (var page = 1; page <= Page.PageCount; page++)
             {
                 var currentPage = page;
-                <li class="page-item @(Page.CurrentPage==currentPage?"active":null)" 
+                <li class="page-item @(Page.CurrentPage == currentPage ? "active" : null)"
                     @onclick="() => RequestPage(currentPage)">
                     <a class="page-link">@currentPage</a>
                 </li>
             }
-            <li class="page-item @(Page.CurrentPage==Page.PageCount?"disabled":null)" @onclick="() => RequestPage(Page.CurrentPage + 1)">
+            <li class="page-item @(Page.CurrentPage == Page.PageCount ? "disabled" : null)" @onclick="() => RequestPage(Page.CurrentPage + 1)">
                 <a class="page-link">Next</a>
-            </li> 
-            <li class="page-item @(Page.CurrentPage==Page.PageCount?"disabled":null)" @onclick="() => RequestPage(Page.PageCount)">
+            </li>
+            <li class="page-item @(Page.CurrentPage == Page.PageCount ? "disabled" : null)" @onclick="() => RequestPage(Page.PageCount)">
                 <a class="page-link">Last</a>
             </li>
         </ul>
@@ -94,58 +89,43 @@ else
     <span>No data to read</span>
 }
 
-<Confirm  ConfirmId="GridConfirm" OnConfirm="ConfirmDelete"/>
+<Confirm ConfirmId="GridConfirm" OnConfirm="ConfirmDelete"/>
 
 @code {
     private TGrid? itemToDelete = null;
-    private IJSObjectReference? moduleJs = null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            moduleJs = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Grocery.UI/confirm.js");
+            if (ConfirmService is not null)
+                await ConfirmService.Init();
         }
     }
 
     public async Task RequestDelete(TGrid item)
     {
         itemToDelete = item;
-        if (moduleJs is not null)
+        if (ConfirmService is not null)
         {
-        await moduleJs.InvokeVoidAsync("showConfirm", "GridConfirm");
-            
+            await ConfirmService.ShowConfirm("GridConfirm");
         }
     }
-    
+
     public async Task ConfirmDelete()
     {
-        if (itemToDelete!=null) await OnDelete.InvokeAsync(itemToDelete);
+        if (itemToDelete != null) await OnDelete.InvokeAsync(itemToDelete);
 
-        if (moduleJs is not null)
+        if (ConfirmService is not null)
         {
-            await moduleJs.InvokeVoidAsync("hideConfirm", "GridConfirm");
+            await ConfirmService.HideConfirm("GridConfirm");
         }
-
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
     private PropertyInfo[] properties = typeof(TGrid).GetProperties()
-                                                    .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
-                                                    .ToArray();
+        .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
+        .ToArray();
 
     private PageParameters _pageparameters = new PageParameters();
 
@@ -174,9 +154,8 @@ else
         else
         {
             _pageparameters.OrderByDirection =
-            _pageparameters.OrderByDirection == SortDirection.Ascending
+                _pageparameters.OrderByDirection == SortDirection.Ascending
                     ? SortDirection.Descending : SortDirection.Ascending;
-
         }
         await OnPageRequest.InvokeAsync(_pageparameters);
     }
@@ -185,6 +164,6 @@ else
     {
         _pageparameters.Page = requestedpage;
         await OnPageRequest.InvokeAsync(_pageparameters);
-
     }
+
 }
