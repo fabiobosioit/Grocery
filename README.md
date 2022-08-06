@@ -1,2 +1,3 @@
-# Grocery
-Project for little Grocery
+# Generic ERP
+Project for little ERP
+
