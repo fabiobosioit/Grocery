@@ -1,5 +1,6 @@
 @typeparam IdType
 @typeparam TGrid where TGrid :BaseListItem<IdType>
+@inject IJSRuntime JsRuntime
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -54,7 +55,7 @@
                             Edit
                         </button>
                         <button class="btn btn-error"
-                        @onclick="@(() => OnDelete.InvokeAsync(item))">
+                        @onclick="@(() => RequestDelete(item))">
                             Delete
                         </button>
                     </td>
@@ -93,7 +94,55 @@ else
     <span>No data to read</span>
 }
 
+<Confirm  ConfirmId="GridConfirm" OnConfirm="ConfirmDelete"/>
+
 @code {
+    private TGrid? itemToDelete = null;
+    private IJSObjectReference? moduleJs = null;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            moduleJs = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Grocery.UI/confirm.js");
+        }
+    }
+
+    public async Task RequestDelete(TGrid item)
+    {
+        itemToDelete = item;
+        if (moduleJs is not null)
+        {
+        await moduleJs.InvokeVoidAsync("showConfirm", "GridConfirm");
+            
+        }
+    }
+    
+    public async Task ConfirmDelete()
+    {
+        if (itemToDelete!=null) await OnDelete.InvokeAsync(itemToDelete);
+
+        if (moduleJs is not null)
+        {
+            await moduleJs.InvokeVoidAsync("hideConfirm", "GridConfirm");
+        }
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private PropertyInfo[] properties = typeof(TGrid).GetProperties()
                                                     .Where(x => x.GetCustomAttribute<HiddenAttribute>() == null)
                                                     .ToArray();
